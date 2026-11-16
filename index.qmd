@@ -1,0 +1,122 @@
+---
+title: "Climate resilience and equity profile of VCH communities"
+subtitle: "Where social vulnerability to extreme heat and wildfire smoke overlaps with low green cover"
+---
+
+```{r}
+#| label: setup
+library(here)
+library(dplyr)
+library(sf)
+library(leaflet)
+library(knitr)
+
+da   <- st_read(here("data", "processed", "vch_da_index.gpkg"), quiet = TRUE)
+chsa <- st_read(here("data", "processed", "vch_chsa_summary.gpkg"), quiet = TRUE)
+```
+
+This map shows a simple social vulnerability index for every neighbourhood (census dissemination area) in the Vancouver Coastal Health region, alongside vegetation cover. Click any area to see its details.
+
+- **Social vulnerability** combines five 2021 Census indicators with equal weights: people aged 65 and over, one-person households, low income, renter households, and people with no knowledge of English or French. Areas are grouped into fifths across the VCH region, from 1 (least vulnerable) to 5 (most vulnerable).
+- **Vegetation cover** is the share of ground covered by trees, shrubs, or grass, averaged over 2019 to 2024 (Statistics Canada). It is only available for the large urban area, so rural communities appear grey.
+- **Priority areas** (dark blue outline) are in the most vulnerable fifth *and* the lowest third for vegetation cover.
+
+Use the layer button (top right of the map) to switch between vulnerability and vegetation, and to show or hide priority areas and CHSA boundaries.
+
+```{r}
+#| label: map
+#| column: page
+
+fmt <- function(x, digits = 1) {
+  ifelse(is.na(x), "n/a", formatC(x, format = "f", digits = digits))
+}
+
+da <- da |>
+  mutate(popup = paste0(
+    "<strong>", chsa_name, "</strong><br>",
+    "Dissemination area ", DAUID, ", population ",
+    format(pop_total, big.mark = ","), "<br><br>",
+    "<strong>Vulnerability quintile: ",
+    ifelse(is.na(svi_quintile), "not scored", svi_quintile),
+    "</strong> (score ", fmt(svi_score, 2), ")<br>",
+    "Aged 65 and over: ", fmt(pct_65plus), "%<br>",
+    "One-person households: ", fmt(pct_alone), "%<br>",
+    "Low income (LIM-AT): ", fmt(pct_lowinc), "%<br>",
+    "Renter households: ", fmt(pct_renter), "%<br>",
+    "No English or French: ", fmt(pct_nolang), "%<br><br>",
+    "Vegetation cover: ", fmt(fvc_pct), "%<br>",
+    "Statistics Canada CISV quintile (national): ",
+    ifelse(is.na(cisv_quintile), "n/a", cisv_quintile),
+    ifelse(priority, "<br><br><strong>Priority: high vulnerability and low vegetation</strong>", "")
+  ))
+
+pal_svi <- colorFactor("YlOrRd", domain = 1:5, na.color = "#d9d9d9")
+pal_fvc <- colorBin("Greens", domain = c(0, 100),
+                    bins = c(0, 15, 25, 35, 50, 100), na.color = "#d9d9d9")
+
+leaflet(width = "100%", height = "680px") |>
+  addProviderTiles(providers$CartoDB.Positron) |>
+  addPolygons(
+    data = da, group = "Social vulnerability",
+    fillColor = ~pal_svi(svi_quintile), fillOpacity = 0.75,
+    color = "white", weight = 0.3, popup = ~popup,
+    highlightOptions = highlightOptions(weight = 2, color = "#333333", bringToFront = FALSE)
+  ) |>
+  addPolygons(
+    data = da, group = "Vegetation cover",
+    fillColor = ~pal_fvc(fvc_pct), fillOpacity = 0.75,
+    color = "white", weight = 0.3, popup = ~popup,
+    highlightOptions = highlightOptions(weight = 2, color = "#333333", bringToFront = FALSE)
+  ) |>
+  addPolygons(
+    data = filter(da, priority), group = "Priority areas",
+    fill = FALSE, color = "#08306b", weight = 2.5,
+    options = pathOptions(interactive = FALSE)
+  ) |>
+  addPolygons(
+    data = chsa, group = "CHSA boundaries",
+    fill = FALSE, color = "#252525", weight = 1.2, opacity = 0.8,
+    options = pathOptions(interactive = FALSE)
+  ) |>
+  addLegend(
+    pal = pal_svi, values = 1:5, position = "bottomright",
+    title = "Vulnerability<br>quintile (5 = highest)", opacity = 0.8
+  ) |>
+  addLegend(
+    pal = pal_fvc, values = c(0, 100), position = "bottomleft",
+    title = "Vegetation<br>cover (%)", opacity = 0.8
+  ) |>
+  addLayersControl(
+    baseGroups    = c("Social vulnerability", "Vegetation cover"),
+    overlayGroups = c("Priority areas", "CHSA boundaries"),
+    options       = layersControlOptions(collapsed = FALSE)
+  ) |>
+  setView(lng = -123.12, lat = 49.25, zoom = 11)
+```
+
+## Communities with the highest social vulnerability
+
+Community Health Service Areas (CHSAs) ranked by population-weighted mean vulnerability score.
+
+```{r}
+#| label: top-chsa-table
+chsa |>
+  st_drop_geometry() |>
+  arrange(svi_rank) |>
+  slice_head(n = 10) |>
+  transmute(
+    Rank = svi_rank,
+    CHSA = chsa_name,
+    Population = format(population, big.mark = ","),
+    `Mean vulnerability score` = round(svi_mean, 2),
+    `Population in most vulnerable fifth (%)` = round(pct_pop_svi_q5),
+    `Vegetation cover (%)` = round(fvc_mean)
+  ) |>
+  kable(align = "llrrrr")
+```
+
+## About this project
+
+This is an independent portfolio project using open data. It is not affiliated with or endorsed by Vancouver Coastal Health. Methods, data sources, licences, and limitations are documented in the [GitHub repository](https://github.com/emmabranch/vch-climate-equity-profile).
+
+**Data:** Statistics Canada 2021 Census Profile and boundary files; Statistics Canada Canadian Index of Social Vulnerability and Canadian Index of Multiple Deprivation (2021); Statistics Canada vegetation cover in large urban areas (Table 38-10-0187-01); BC Ministry of Health Community Health Service Area boundaries (BC Data Catalogue). Basemap © OpenStreetMap contributors © CARTO.

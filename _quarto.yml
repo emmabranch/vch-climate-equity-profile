@@ -1,0 +1,27 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - index.qmd
+
+website:
+  title: "VCH Climate Resilience and Equity Profile"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Map
+    right:
+      - icon: github
+        href: https://github.com/emmabranch/vch-climate-equity-profile
+  page-footer:
+    center: "Independent portfolio project by Emma Cox. Not affiliated with or endorsed by Vancouver Coastal Health."
+
+format:
+  html:
+    theme: cosmo
+    toc: false
+
+execute:
+  echo: false
+  warning: false
+  message: false
