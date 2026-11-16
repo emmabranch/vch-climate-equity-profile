@@ -1,0 +1,6 @@
+comparison,spearman_rho,n_da
+SVI vs CISV score (Statistics Canada social vulnerability),0.74,1767
+SVI vs CIMD economic dependency quintile,0.25,1767
+SVI vs CIMD situational vulnerability quintile,0.3,1767
+SVI vs CIMD residential instability quintile,0.53,1767
+SVI vs vegetation cover (%),-0.36,1599

@@ -43,55 +43,90 @@ st_write(chsa_vch, file.path(raw_dir, "chsa_vch.gpkg"), delete_dsn = TRUE)
 
 
 # -----------------------------------------------------------------------------
-# 2. 2021 Census of Population, dissemination area (DA) level, via cancensus
-#
-#    Fill in each "v_CA21_XXXX" before running this section. Two quick ways:
-#      a) https://censusmapper.ca/api : choose CA21, click variables, copy IDs
-#      b) In the console, for example:
-#         find_census_vectors("65 years and over", dataset = "CA21",
-#                             type = "total", query_type = "exact")
-#         find_census_vectors("Renter", dataset = "CA21",
-#                             type = "total", query_type = "exact")
-#         find_census_vectors("Neither English nor French", dataset = "CA21",
-#                             type = "total", query_type = "exact")
-#         find_census_vectors("LIM-AT", dataset = "CA21",
-#                             type = "total", query_type = "keyword")
-#    Several tables share labels (e.g. "65 years and over"), so pick the one
-#    whose parent is the table named in each comment.
+# 2. 2021 Census of Population, dissemination area (DA) level
+#    Source: Statistics Canada, Census Profile 2021 comprehensive download,
+#            "Canada, provinces, territories, census divisions (CDs), census
+#            subdivisions (CSDs) and dissemination areas (DAs) - British
+#            Columbia only" (catalogue 98-401-X2021006), CSV.
+#    Downloaded by hand and saved as data/raw/census_profile_bc.zip
+#    (Used instead of cancensus because the free CensusMapper quota was too small.)
 # -----------------------------------------------------------------------------
-census_vectors <- c(
-  pop_total       = "v_CA21_1",    # Population, 2021 (check)
-  age_total       = "v_CA21_XXXX", # Total - Age groups of the population (100% data)
-  age_65plus      = "v_CA21_XXXX", #   65 years and over (child of the row above)
-  hh_total_size   = "v_CA21_XXXX", # Total - Private households by household size
-  hh_one_person   = "v_CA21_XXXX", #   1 person
-  hh_total_tenure = "v_CA21_XXXX", # Total - Private households by tenure (25% sample)
-  hh_renter       = "v_CA21_XXXX", #   Renter
-  lang_total      = "v_CA21_XXXX", # Total - Knowledge of official languages
-  lang_neither    = "v_CA21_XXXX", #   Neither English nor French
-  lim_at_pct      = "v_CA21_XXXX"  # Prevalence of low income, LIM-AT (%)
+library(tidyr)
+
+# 2a. Unzip and find the English data file
+unzip(file.path(raw_dir, "census_profile_bc.zip"),
+      exdir = file.path(raw_dir, "census_profile"))
+profile_csv <- list.files(file.path(raw_dir, "census_profile"),
+                          pattern = "English_CSV_data.*\\.csv$",
+                          full.names = TRUE)
+profile_csv # should print one file path
+
+# 2b. Peek at the column names (the next step expects these names)
+read_csv(profile_csv, n_max = 5, locale = locale(encoding = "latin1")) |>
+  names()
+
+# 2c. Census Profile characteristic IDs (from the 98-401-X2021006 metadata)
+char_ids <- c(
+  pop_total       = 1,    # Population, 2021
+  age_total       = 8,    # Total - Age groups of the population - 100% data
+  age_65plus      = 24,   #   65 years and over
+  hh_total_size   = 50,   # Total - Private households by household size
+  hh_one_person   = 51,   #   1 person
+  lim_at_pct      = 345,  # Prevalence of low income, LIM-AT (%)
+  lang_total      = 383,  # Total - Knowledge of official languages
+  lang_neither    = 387,  #   Neither English nor French
+  hh_total_tenure = 1414, # Total - Private households by tenure - 25% sample
+  hh_renter       = 1416  #   Renter
 )
 
-stopifnot(
-  "Replace every v_CA21_XXXX placeholder first" = !any(grepl("XXXX", census_vectors))
-)
+# 2d. Read only the columns we need (large file: allow a few minutes)
+profile <- read_csv(
+  profile_csv,
+  col_select = c(GEO_LEVEL, ALT_GEO_CODE, CHARACTERISTIC_ID,
+                 CHARACTERISTIC_NAME, C1_COUNT_TOTAL),
+  col_types  = cols(.default = col_character()),
+  locale     = locale(encoding = "latin1")
+) |>
+  filter(as.integer(CHARACTERISTIC_ID) %in% char_ids)
 
-# Confirm each ID is the variable you intended (worth a screenshot for the README)
-list_census_vectors("CA21") |>
-  filter(vector %in% census_vectors) |>
-  select(vector, label, details) |>
-  print(n = Inf)
+# 2e. Check the IDs point to the right variables (read the names column)
+profile |>
+  filter(GEO_LEVEL == "Province") |>
+  distinct(CHARACTERISTIC_ID, CHARACTERISTIC_NAME)
 
-census_da <- get_census(
-  dataset    = "CA21",
-  regions    = list(PR = "59"), # all of BC; trimmed to VCH spatially in step 02
-  vectors    = census_vectors,
-  level      = "DA",
-  geo_format = "sf",
-  labels     = "short"
-)
+# 2f. One row per DA, one column per variable.
+#     Suppressed values (symbols such as "x" or "..") become NA.
+census_data <- profile |>
+  filter(GEO_LEVEL == "Dissemination area") |>
+  mutate(
+    var   = names(char_ids)[match(as.integer(CHARACTERISTIC_ID), char_ids)],
+    value = suppressWarnings(as.numeric(C1_COUNT_TOTAL))
+  ) |>
+  select(DAUID = ALT_GEO_CODE, var, value) |>
+  pivot_wider(names_from = var, values_from = value)
 
-message("BC DAs downloaded: ", nrow(census_da))
+summary(census_data) # lim_at_pct should be 0 to 100
+
+# 2g. DA shapes from Statistics Canada's 2021 cartographic boundary file
+da_zip <- file.path(raw_dir, "lda_000b21a_e.zip")
+if (!file.exists(da_zip)) {
+  download.file(
+    "https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/files-fichiers/lda_000b21a_e.zip",
+    da_zip,
+    mode = "wb"
+  )
+}
+unzip(da_zip, exdir = file.path(raw_dir, "da_boundaries"))
+da_shp <- list.files(file.path(raw_dir, "da_boundaries"),
+                     pattern = "\\.shp$", full.names = TRUE)
+
+# 2h. Join numbers to shapes, keep BC only, and save
+census_da <- st_read(da_shp) |>
+  filter(PRUID == "59") |>
+  select(DAUID) |>
+  left_join(census_data, by = "DAUID")
+
+message("BC DAs: ", nrow(census_da))
 st_write(census_da, file.path(raw_dir, "census_da_bc_2021.gpkg"), delete_dsn = TRUE)
 
 
@@ -132,15 +167,16 @@ write_csv(veg_bc_da, file.path(raw_dir, "vegetation_cover_bc_da.csv"))
 
 
 # -----------------------------------------------------------------------------
-# 5. OPTIONAL: Canadian Index of Multiple Deprivation 2021, BC file
-#    Archived by Statistics Canada but still downloadable. Uncomment if wanted.
+# 5. Canadian Index of Multiple Deprivation 2021, BC file
+#    Archived by Statistics Canada but still downloadable.
 # -----------------------------------------------------------------------------
-# cimd_zip <- file.path(raw_dir, "cimd_bc_2021.zip")
-# download.file(
-#   "https://www150.statcan.gc.ca/pub/45-20-0001/2023001/csv/bc_scores_quintiles_csv-eng.zip",
-#   cimd_zip, mode = "wb"
-# )
-# unzip(cimd_zip, exdir = file.path(raw_dir, "cimd"))
+
+cimd_zip <- file.path(raw_dir, "cimd_bc_2021.zip")
+download.file(
+  "https://www150.statcan.gc.ca/pub/45-20-0001/2023001/csv/bc_scores_quintiles_csv-eng.zip",
+  cimd_zip, mode = "wb"
+)
+unzip(cimd_zip, exdir = file.path(raw_dir, "cimd"))
 
 
 # -----------------------------------------------------------------------------

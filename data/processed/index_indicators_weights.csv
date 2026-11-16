@@ -1,0 +1,6 @@
+indicator,label,weight,rationale
+pct_65plus,Population aged 65 and over (%),0.2,Greater physiological sensitivity to heat and wildfire smoke
+pct_alone,One-person households (%),0.2,Social isolation; fewer people to notice illness during heat or smoke events
+pct_lowinc,"Low income, LIM-AT (%)",0.2,"Less ability to afford cooling, air filtration, or temporary relocation"
+pct_renter,Renter households (%),0.2,"Less control over cooling, ventilation, and building upgrades"
+pct_nolang,No knowledge of English or French (%),0.2,"Barriers to receiving heat, smoke, and emergency alerts"
