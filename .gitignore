@@ -1,0 +1,17 @@
+# R and RStudio
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+.Renviron
+
+# Raw data: large and re-downloadable with R/01_download_data.R, so not committed
+data/raw/
+
+# Quarto build artefacts (root only, so docs/ still publishes correctly)
+/.quarto/
+/*_files/
+/*_cache/
+
+# macOS
+.DS_Store
