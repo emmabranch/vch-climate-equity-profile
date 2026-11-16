@@ -55,8 +55,8 @@ pal_fvc <- colorBin("Greens", domain = c(0, 100),
                     bins = c(0, 15, 25, 35, 50, 100), na.color = "#d9d9d9")
 
 leaflet(width = "100%", height = "680px") |>
-  addProviderTiles(providers$CartoDB.Positron) |>
-  addPolygons(
+   addProviderTiles(providers$Esri.WorldGrayCanvas) |>
+    addPolygons(
     data = da, group = "Social vulnerability",
     fillColor = ~pal_svi(svi_quintile), fillOpacity = 0.75,
     color = "white", weight = 0.3, popup = ~popup,
@@ -119,4 +119,4 @@ chsa |>
 
 This is an independent portfolio project using open data. It is not affiliated with or endorsed by Vancouver Coastal Health. Methods, data sources, licences, and limitations are documented in the [GitHub repository](https://github.com/emmabranch/vch-climate-equity-profile).
 
-**Data:** Statistics Canada 2021 Census Profile and boundary files; Statistics Canada Canadian Index of Social Vulnerability and Canadian Index of Multiple Deprivation (2021); Statistics Canada vegetation cover in large urban areas (Table 38-10-0187-01); BC Ministry of Health Community Health Service Area boundaries (BC Data Catalogue). Basemap © OpenStreetMap contributors © CARTO.
+**Data:** Statistics Canada 2021 Census Profile and boundary files; Statistics Canada Canadian Index of Social Vulnerability and Canadian Index of Multiple Deprivation (2021); Statistics Canada vegetation cover in large urban areas (Table 38-10-0187-01); BC Ministry of Health Community Health Service Area boundaries (BC Data Catalogue).    Basemap: Esri World Light Gray Canvas (Esri, HERE, Garmin, © OpenStreetMap contributors).
