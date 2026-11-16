@@ -1,0 +1,134 @@
+---
+title: "Social vulnerability to extreme heat and wildfire smoke in the VCH region"
+subtitle: "Briefing note for Medical Health Officers and local government planners"
+author: "Emma Branch (independent analysis, not a Vancouver Coastal Health product)"
+date: "November 2026"
+format:
+  html:
+    toc: false
+  typst:
+    fig-format: png    
+    papersize: us-letter
+    fontsize: 9.5pt
+    margin:
+      x: 1.8cm
+      y: 1.5cm
+---
+
+```{r}
+#| label: setup
+library(here)
+library(dplyr)
+library(tidyr)
+library(readr)
+library(sf)
+library(knitr)
+
+chsa <- read_csv(here("data", "processed", "vch_chsa_summary.csv"), show_col_types = FALSE) |>
+  arrange(svi_rank)
+val  <- read_csv(here("data", "processed", "index_validation.csv"), show_col_types = FALSE)
+ind  <- read_csv(here("data", "processed", "index_indicators_weights.csv"), show_col_types = FALSE)
+da   <- st_read(here("data", "processed", "vch_da_index.gpkg"), quiet = TRUE) |>
+  st_drop_geometry()
+
+# Helpers for inline numbers
+f0 <- function(x) format(round(x), big.mark = ",")
+f1 <- function(x) formatC(x, format = "f", digits = 1)
+and_list <- function(x) {
+  if (length(x) <= 2) return(paste(x, collapse = " and "))
+  paste0(paste(x[-length(x)], collapse = ", "), ", and ", x[length(x)])
+}
+
+# Headline numbers
+n_da       <- sum(da$in_index)
+n_chsa     <- nrow(chsa)
+rho_cisv   <- val$spearman_rho[grepl("CISV", val$comparison)]
+rho_veg    <- val$spearman_rho[grepl("vegetation", val$comparison)]
+n_priority <- sum(da$priority)
+pop_prio   <- sum(da$pop_total[da$priority], na.rm = TRUE)
+top3       <- chsa$chsa_name[1:3]
+
+# Vegetation cover in the most and least vulnerable fifths (population-weighted)
+veg_q <- da |>
+  filter(in_index, !is.na(fvc_pct), !is.na(pop_total)) |>
+  group_by(svi_quintile) |>
+  summarise(fvc = weighted.mean(fvc_pct, pop_total), .groups = "drop")
+veg_q1 <- veg_q$fvc[veg_q$svi_quintile == 1]
+veg_q5 <- veg_q$fvc[veg_q$svi_quintile == 5]
+
+# Main drivers: the two indicators most above the VCH average in each CHSA
+short_labels <- c(pct_65plus = "aged 65+", pct_alone = "living alone",
+                  pct_lowinc = "low income", pct_renter = "renting",
+                  pct_nolang = "no English or French")
+
+vch_avg <- chsa |>
+  summarise(across(all_of(ind$indicator), ~ weighted.mean(.x, population, na.rm = TRUE))) |>
+  pivot_longer(everything(), names_to = "indicator", values_to = "vch_mean")
+
+drivers <- chsa |>
+  select(chsa_name, all_of(ind$indicator)) |>
+  pivot_longer(-chsa_name, names_to = "indicator", values_to = "value") |>
+  left_join(vch_avg, by = "indicator") |>
+  mutate(ratio = value / vch_mean) |>
+  group_by(chsa_name) |>
+  slice_max(ratio, n = 2, with_ties = FALSE) |>
+  summarise(
+    drivers = paste0(short_labels[indicator], " (", f1(ratio), "x)", collapse = "; "),
+    .groups = "drop"
+  )
+
+# Communities with the largest share of residents in priority areas
+prio_chsa <- chsa |>
+  filter(pct_pop_priority > 0) |>
+  arrange(desc(pct_pop_priority)) |>
+  slice_head(n = 5)
+```
+
+## Purpose
+
+To identify which communities in the Vancouver Coastal Health (VCH) region are most socially vulnerable to extreme heat and wildfire smoke, and whether those communities also have less green cover, so that adaptation efforts can be prioritised. Full methods and the [interactive map](https://emmabranch.github.io/vch-climate-equity-profile/) are available online.
+
+## Key findings
+
+- **Vulnerability is concentrated in a small number of communities.** Across `r f0(n_da)` neighbourhoods (dissemination areas) in `r n_chsa` Community Health Service Areas (CHSAs), the highest average vulnerability was in `r and_list(top3)`.
+- **The most vulnerable neighbourhoods have the least green cover.** In the large urban area, vegetation covered an average of `r f1(veg_q5)`% of land in the most vulnerable fifth of neighbourhoods, compared with `r f1(veg_q1)`% in the least vulnerable fifth (Spearman's rho = `r rho_veg`).
+- **`r n_priority` neighbourhoods, home to about `r f0(pop_prio)` people, face both risks:** they are in the most vulnerable fifth *and* the lowest third for vegetation cover. The largest shares of residents in these priority areas are in `r and_list(prio_chsa$chsa_name)`.
+- **The drivers of vulnerability differ between communities** (see table). Some rank highly mainly because of older adults and people living alone, and others because of low income, renting, or language barriers. A single intervention will not fit every community.
+- **The index is consistent with national measures.** It agrees closely with Statistics Canada's Canadian Index of Social Vulnerability (rho = `r rho_cisv`).
+
+## Communities with the highest social vulnerability
+
+```{r}
+#| label: top-table
+chsa |>
+  slice_head(n = 8) |>
+  left_join(drivers, by = "chsa_name") |>
+  transmute(
+    Rank = svi_rank,
+    CHSA = chsa_name,
+    Population = f0(population),
+    `Residents in most vulnerable fifth (%)` = round(pct_pop_svi_q5),
+    `Vegetation cover (%)` = ifelse(is.na(fvc_mean), "n/a", round(fvc_mean)),
+    `Main drivers (times VCH average)` = drivers
+  ) |>
+  kable(align = "llrrrl")
+```
+
+## Recommended next steps (for consideration)
+
+1. **Target heat and smoke outreach to the priority communities.** Focus wellness checks, cooling and cleaner-air space promotion, and portable air cleaner programs on the neighbourhoods identified here, tailored to each community's main drivers (for example, check-in programs where many older adults live alone, and multilingual alerts where language barriers are common).
+2. **Use the priority areas to guide urban greening with municipalities.** Share the neighbourhood-level results with the City of Vancouver, Richmond, and the North Shore municipalities to inform tree planting and shade planning in areas with high vulnerability and low green cover.
+3. **Review access to cooling and cleaner-air spaces.** Map existing spaces against the priority areas, considering opening hours and transport as well as distance.
+4. **Add hazard exposure and health outcome data.** This index measures social vulnerability only. Combining it with modelled heat and wildfire smoke exposure and with health service use during past events would show where risk is greatest.
+5. **Ground-truth the findings with communities.** Review results with community partners and with First Nations partners, recognising that some census measures are not published for First Nations reserves.
+
+## Limitations
+
+- **Area-level data:** results describe neighbourhoods, not individuals, and may hide variation within areas.
+- **Data currency:** census data are from 2021, collected during the COVID-19 pandemic.
+- **Index design:** equal weights are a transparent default, not an evidence-based weighting. Quintiles are relative to the VCH region.
+- **Green cover:** the vegetation measure includes grass and shrubs as well as trees, and is only available for the large urban area. Rural and remote communities are not assessed for green cover.
+- **Missing data:** low income is not published for First Nations reserves, so these areas are scored on four indicators instead of five.
+- **No outcome validation:** the index has not been tested against heat- or smoke-related health outcomes.
+
+*Data: Statistics Canada 2021 Census Profile, Canadian Index of Social Vulnerability (2021), Canadian Index of Multiple Deprivation (2021), and vegetation cover in large urban areas (Table 38-10-0187-01); BC Ministry of Health CHSA boundaries. Code: github.com/emmabranch/vch-climate-equity-profile*

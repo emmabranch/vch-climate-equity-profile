@@ -3,6 +3,7 @@ project:
   output-dir: docs
   render:
     - index.qmd
+    - briefing.qmd
 
 website:
   title: "VCH Climate Resilience and Equity Profile"
@@ -10,11 +11,13 @@ website:
     left:
       - href: index.qmd
         text: Map
+      - href: briefing.qmd
+        text: Briefing
     right:
       - icon: github
         href: https://github.com/emmabranch/vch-climate-equity-profile
   page-footer:
-    center: "Independent portfolio project by Emma Cox. Not affiliated with or endorsed by Vancouver Coastal Health."
+    center: "Independent portfolio project by Emma Branch. Not affiliated with or endorsed by Vancouver Coastal Health."
 
 format:
   html:

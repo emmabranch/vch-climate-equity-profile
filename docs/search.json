@@ -1,5 +1,47 @@
 [
   {
+    "objectID": "briefing.html",
+    "href": "briefing.html",
+    "title": "Social vulnerability to extreme heat and wildfire smoke in the VCH region",
+    "section": "",
+    "text": "To identify which communities in the Vancouver Coastal Health (VCH) region are most socially vulnerable to extreme heat and wildfire smoke, and whether those communities also have less green cover, so that adaptation efforts can be prioritised. Full methods and the interactive map are available online."
+  },
+  {
+    "objectID": "briefing.html#purpose",
+    "href": "briefing.html#purpose",
+    "title": "Social vulnerability to extreme heat and wildfire smoke in the VCH region",
+    "section": "",
+    "text": "To identify which communities in the Vancouver Coastal Health (VCH) region are most socially vulnerable to extreme heat and wildfire smoke, and whether those communities also have less green cover, so that adaptation efforts can be prioritised. Full methods and the interactive map are available online."
+  },
+  {
+    "objectID": "briefing.html#key-findings",
+    "href": "briefing.html#key-findings",
+    "title": "Social vulnerability to extreme heat and wildfire smoke in the VCH region",
+    "section": "Key findings",
+    "text": "Key findings\n\nVulnerability is concentrated in a small number of communities. Across 1,773 neighbourhoods (dissemination areas) in 45 Community Health Service Areas (CHSAs), the highest average vulnerability was in Downtown Eastside, Richmond City Centre, and West End.\nThe most vulnerable neighbourhoods have the least green cover. In the large urban area, vegetation covered an average of 25.0% of land in the most vulnerable fifth of neighbourhoods, compared with 35.2% in the least vulnerable fifth (Spearman’s rho = -0.36).\n166 neighbourhoods, home to about 137,967 people, face both risks: they are in the most vulnerable fifth and the lowest third for vegetation cover. The largest shares of residents in these priority areas are in Downtown Eastside, Downtown Vancouver, Richmond City Centre, West End, and North Vancouver City - West.\nThe drivers of vulnerability differ between communities (see table). Some rank highly mainly because of older adults and people living alone, and others because of low income, renting, or language barriers. A single intervention will not fit every community.\nThe index is consistent with national measures. It agrees closely with Statistics Canada’s Canadian Index of Social Vulnerability (rho = 0.74)."
+  },
+  {
+    "objectID": "briefing.html#communities-with-the-highest-social-vulnerability",
+    "href": "briefing.html#communities-with-the-highest-social-vulnerability",
+    "title": "Social vulnerability to extreme heat and wildfire smoke in the VCH region",
+    "section": "Communities with the highest social vulnerability",
+    "text": "Communities with the highest social vulnerability\n\n\n\n\n\n\n\n\n\n\n\n\n\nRank\nCHSA\nPopulation\nResidents in most vulnerable fifth (%)\nVegetation cover (%)\nMain drivers (times VCH average)\n\n\n\n\n1\nDowntown Eastside\n20,168\n87\n17\nlow income (2.2x); living alone (2.0x)\n\n\n2\nRichmond City Centre\n63,946\n75\n24\nno English or French (2.4x); low income (1.7x)\n\n\n3\nWest End\n46,891\n64\n24\nrenting (2.0x); living alone (1.9x)\n\n\n4\nOakridge/Marpole\n42,794\n47\n27\nlow income (1.3x); no English or French (1.3x)\n\n\n5\nDowntown Vancouver\n44,523\n50\n18\nliving alone (1.6x); renting (1.4x)\n\n\n6\nWest Vancouver - Lower\n20,132\n50\n34\naged 65+ (1.9x); low income (1.2x)\n\n\n7\nUniversity of British Columbia\n18,296\n40\n35\nlow income (2.2x); renting (1.4x)\n\n\n8\nVictoria-Fraserview\n30,433\n31\n23\nno English or French (2.5x); aged 65+ (1.2x)"
+  },
+  {
+    "objectID": "briefing.html#recommended-next-steps-for-consideration",
+    "href": "briefing.html#recommended-next-steps-for-consideration",
+    "title": "Social vulnerability to extreme heat and wildfire smoke in the VCH region",
+    "section": "Recommended next steps (for consideration)",
+    "text": "Recommended next steps (for consideration)\n\nTarget heat and smoke outreach to the priority communities. Focus wellness checks, cooling and cleaner-air space promotion, and portable air cleaner programs on the neighbourhoods identified here, tailored to each community’s main drivers (for example, check-in programs where many older adults live alone, and multilingual alerts where language barriers are common).\nUse the priority areas to guide urban greening with municipalities. Share the neighbourhood-level results with the City of Vancouver, Richmond, and the North Shore municipalities to inform tree planting and shade planning in areas with high vulnerability and low green cover.\nReview access to cooling and cleaner-air spaces. Map existing spaces against the priority areas, considering opening hours and transport as well as distance.\nAdd hazard exposure and health outcome data. This index measures social vulnerability only. Combining it with modelled heat and wildfire smoke exposure and with health service use during past events would show where risk is greatest.\nGround-truth the findings with communities. Review results with community partners and with First Nations partners, recognising that some census measures are not published for First Nations reserves."
+  },
+  {
+    "objectID": "briefing.html#limitations",
+    "href": "briefing.html#limitations",
+    "title": "Social vulnerability to extreme heat and wildfire smoke in the VCH region",
+    "section": "Limitations",
+    "text": "Limitations\n\nArea-level data: results describe neighbourhoods, not individuals, and may hide variation within areas.\nData currency: census data are from 2021, collected during the COVID-19 pandemic.\nIndex design: equal weights are a transparent default, not an evidence-based weighting. Quintiles are relative to the VCH region.\nGreen cover: the vegetation measure includes grass and shrubs as well as trees, and is only available for the large urban area. Rural and remote communities are not assessed for green cover.\nMissing data: low income is not published for First Nations reserves, so these areas are scored on four indicators instead of five.\nNo outcome validation: the index has not been tested against heat- or smoke-related health outcomes.\n\nData: Statistics Canada 2021 Census Profile, Canadian Index of Social Vulnerability (2021), Canadian Index of Multiple Deprivation (2021), and vegetation cover in large urban areas (Table 38-10-0187-01); BC Ministry of Health CHSA boundaries. Code: github.com/emmabranch/vch-climate-equity-profile"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Climate resilience and equity profile of VCH communities",
