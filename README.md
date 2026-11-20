@@ -4,8 +4,18 @@
 
 - **Project site and interactive map:** https://emmabranch.github.io/vch-climate-equity-profile/
 - **Two-page briefing note** (for Medical Health Officers and local government planners), with recommendations informed by VCH's CLEAR lived-experience report: [web](https://emmabranch.github.io/vch-climate-equity-profile/briefing.html) | [PDF](https://emmabranch.github.io/vch-climate-equity-profile/briefing.pdf)
+- **More projects:** [github.com/emmabranch](https://github.com/emmabranch)
+
+![Screenshot of the VCH climate equity profile site](images/screenshot.png)
 
 > **Disclaimer:** This is an independent portfolio project by Emma Branch, built with open data. It is not affiliated with, commissioned by, or endorsed by Vancouver Coastal Health. Findings are illustrative and should not be used for operational decisions without further validation.
+
+## What it does
+
+- Builds a transparent social vulnerability index for 1,773 dissemination areas in the VCH region from five 2021 Census indicators, and validates it against Statistics Canada's Canadian Index of Social Vulnerability.
+- Maps the index alongside vegetation cover on an interactive map, with population-weighted results for 45 Community Health Service Areas.
+- Flags priority areas: neighbourhoods in the most vulnerable fifth of the region that are also in the lowest third for vegetation cover.
+- Summarises the results in a two-page briefing note for Medical Health Officers and local government planners.
 
 ## Key findings
 
@@ -14,6 +24,27 @@
 - **166 DAs, home to about 138,000 people, face both risks:** they are in the most vulnerable fifth of the region *and* the lowest third for vegetation cover.
 - **Vulnerability has different drivers in different places**, for example older adults living alone in some communities, and low income, renting, or language barriers in others.
 - **The index is consistent with national measures:** it agrees closely with Statistics Canada's Canadian Index of Social Vulnerability (rho = 0.74).
+
+## Data and licences
+
+| Data | Citation | Licence |
+|---|---|---|
+| 2021 Census Profile, DA level (BC comprehensive file, 98-401-X2021006) | Statistics Canada. 2022. *Census Profile. 2021 Census.* Catalogue no. 98-316-X2021001. Ottawa. | [Statistics Canada Open Licence](https://www.statcan.gc.ca/en/reference/licence) |
+| 2021 dissemination area cartographic boundary file | Statistics Canada. 2022. *2021 Census Boundary Files.* Catalogue no. 92-160-X. | Statistics Canada Open Licence |
+| Canadian Index of Social Vulnerability, 2021 | Statistics Canada. 2025. *The Canadian Index of Social Resilience and the Canadian Index of Social Vulnerability, 2021.* Catalogue no. 45-20-00012025002. | Statistics Canada Open Licence |
+| Canadian Index of Multiple Deprivation, 2021 (BC) | Statistics Canada. 2023. *The Canadian Index of Multiple Deprivation: Dataset, 2021.* Catalogue no. 45-20-0001. | Statistics Canada Open Licence |
+| Vegetation cover in large urban areas | Statistics Canada. Table 38-10-0187-01, *Vegetation cover in large urban areas.* | Statistics Canada Open Licence |
+| Community Health Service Area boundaries (2022) | BC Ministry of Health. *Community Health Service Areas Boundaries.* BC Data Catalogue. | Open Government Licence (British Columbia) |
+| Basemap | Esri World Light Gray Canvas (Esri, HERE, Garmin, © OpenStreetMap contributors) | Esri terms of use |
+
+No BC Centre for Disease Control data were used.
+
+### Related evidence
+
+- Vancouver Coastal Health Public Health. (2025). *Climate, Lived Experience and Resilience (the CLEAR project): Listening to communities to enhance the public health response to extreme weather events for priority populations.* Vancouver, BC: Vancouver Coastal Health.
+- BC Coroners Service. (2022). *Extreme heat and human mortality: A review of heat-related deaths in B.C. in summer 2021.*
+
+The CLEAR findings informed the indicator rationale and the recommendations in the briefing. This analysis complements CLEAR: CLEAR describes the lived experience of priority populations, while the index shows where people with the same characteristics are concentrated, including rural areas that the CLEAR engagement did not reach.
 
 ## Methods
 
@@ -61,38 +92,6 @@ Strong agreement with the CISV, which is designed for natural hazards, supports 
 - **Vegetation cover:** Statistics Canada's fraction of vegetation cover (trees, shrubs, and grass, from Sentinel-2 imagery), averaged over 2019 to 2024. It is published only for DAs in large urban areas.
 - **Priority areas:** DAs in the most vulnerable quintile *and* the lowest third of vegetation cover among VCH DAs with data.
 
-## Data sources, citations, and licences
-
-| Data | Citation | Licence |
-|---|---|---|
-| 2021 Census Profile, DA level (BC comprehensive file, 98-401-X2021006) | Statistics Canada. 2022. *Census Profile. 2021 Census.* Catalogue no. 98-316-X2021001. Ottawa. | [Statistics Canada Open Licence](https://www.statcan.gc.ca/en/reference/licence) |
-| 2021 dissemination area cartographic boundary file | Statistics Canada. 2022. *2021 Census Boundary Files.* Catalogue no. 92-160-X. | Statistics Canada Open Licence |
-| Canadian Index of Social Vulnerability, 2021 | Statistics Canada. 2025. *The Canadian Index of Social Resilience and the Canadian Index of Social Vulnerability, 2021.* Catalogue no. 45-20-00012025002. | Statistics Canada Open Licence |
-| Canadian Index of Multiple Deprivation, 2021 (BC) | Statistics Canada. 2023. *The Canadian Index of Multiple Deprivation: Dataset, 2021.* Catalogue no. 45-20-0001. | Statistics Canada Open Licence |
-| Vegetation cover in large urban areas | Statistics Canada. Table 38-10-0187-01, *Vegetation cover in large urban areas.* | Statistics Canada Open Licence |
-| Community Health Service Area boundaries (2022) | BC Ministry of Health. *Community Health Service Areas Boundaries.* BC Data Catalogue. | Open Government Licence (British Columbia) |
-| Basemap | Esri World Light Gray Canvas (Esri, HERE, Garmin, © OpenStreetMap contributors) | Esri terms of use |
-
-No BC Centre for Disease Control data were used.
-
-### Related evidence
-
-- Vancouver Coastal Health Public Health. (2025). *Climate, Lived Experience and Resilience (the CLEAR project): Listening to communities to enhance the public health response to extreme weather events for priority populations.* Vancouver, BC: Vancouver Coastal Health.
-- BC Coroners Service. (2022). *Extreme heat and human mortality: A review of heat-related deaths in B.C. in summer 2021.*
-
-The CLEAR findings informed the indicator rationale and the recommendations in the briefing. This analysis complements CLEAR: CLEAR describes the lived experience of priority populations, while the index shows where people with the same characteristics are concentrated, including rural areas that the CLEAR engagement did not reach.
-
-## Limitations
-
-- **Area-level data:** results describe neighbourhoods, not individuals (ecological fallacy), and may hide variation within areas.
-- **Data currency:** census data are from 2021, collected during the COVID-19 pandemic.
-- **Missing risk factors:** chronic health conditions and disability, key heat risk factors identified by the BC Coroners Service, are not available in the census at the neighbourhood level.
-- **Index design:** equal weights are a transparent default, not evidence-based weights. Quintiles are relative to the VCH region, so they cannot be compared with other regions.
-- **Vulnerability, not risk:** the index measures social vulnerability only. It does not include heat or smoke exposure, or health outcomes, and has not been validated against outcomes.
-- **Green cover:** the vegetation measure includes grass and shrubs as well as tree canopy, and is not available for rural and remote communities (for example, the Sunshine Coast, Sea-to-Sky, and Central Coast).
-- **Missing and suppressed data:** low income is not published for First Nations reserves, and small DAs may have suppressed values. These DAs are scored on the indicators available.
-- **Boundary assignment:** DAs are assigned to a single CHSA by location, so DAs crossing CHSA boundaries are assigned to one CHSA only.
-
 ## Repository structure
 
 ```
@@ -106,8 +105,11 @@ vch-climate-equity-profile/
 ├── index.qmd                 # Home page: banner, key figures, interactive map, CHSA table
 ├── briefing.qmd              # Two-page briefing note (HTML and PDF)
 ├── _quarto.yml               # Website settings
-├── theme.scss                # Site styling (fonts, colours, banner, stat boxes)
+├── _brand.yml, brand.scss    # Shared portfolio theme (fonts, colours, navbar)
+├── footer.html               # Shared portfolio footer
+├── theme.scss                # This project's colours and banner
 ├── favicon.svg               # Browser tab icon
+├── images/                   # README screenshot
 ├── docs/                     # Rendered website (GitHub Pages)
 └── renv.lock                 # R package versions
 ```
@@ -122,11 +124,21 @@ vch-climate-equity-profile/
 4. Run `R/01_download_data.R`, then `R/02_build_index.R`.
 5. Build the website and briefing: run `quarto render` in the Terminal (Quarto 1.4 or later).
 
-## Built with
+Built with R (sf, dplyr, tidyr, readr, bcdata, cansim, leaflet, htmltools, knitr), Quarto with a custom SCSS theme, Typst (for the PDF briefing), renv, and GitHub Pages.
 
-R (sf, dplyr, tidyr, readr, bcdata, cansim, leaflet, htmltools, knitr), Quarto with a custom SCSS theme, Typst (for the PDF briefing), renv, and GitHub Pages.
+## Limitations
 
-## Author
+- **Area-level data:** results describe neighbourhoods, not individuals (ecological fallacy), and may hide variation within areas.
+- **Data currency:** census data are from 2021, collected during the COVID-19 pandemic.
+- **Missing risk factors:** chronic health conditions and disability, key heat risk factors identified by the BC Coroners Service, are not available in the census at the neighbourhood level.
+- **Index design:** equal weights are a transparent default, not evidence-based weights. Quintiles are relative to the VCH region, so they cannot be compared with other regions.
+- **Vulnerability, not risk:** the index measures social vulnerability only. It does not include heat or smoke exposure, or health outcomes, and has not been validated against outcomes.
+- **Green cover:** the vegetation measure includes grass and shrubs as well as tree canopy, and is not available for rural and remote communities (for example, the Sunshine Coast, Sea-to-Sky, and Central Coast).
+- **Missing and suppressed data:** low income is not published for First Nations reserves, and small DAs may have suppressed values. These DAs are scored on the indicators available.
+- **Boundary assignment:** DAs are assigned to a single CHSA by location, so DAs crossing CHSA boundaries are assigned to one CHSA only.
 
-**Emma Branch**, epidemiologist and PhD candidate in epidemiology, University of British Columbia.
-GitHub: [@emmabranch](https://github.com/emmabranch)
+## About me
+
+I'm Emma Branch, an epidemiologist and data analyst in British Columbia, and a PhD candidate in Population and Public Health at the University of British Columbia. I've spent about 10 years working with health research data, including registry analytics, REDCap database design, data governance, and performance measurement. I mostly work in R, SAS, and SQL, and build reports and tools with Quarto, Shiny, leaflet, and Power BI. Lately I've been applying the same habits to environmental and ocean data, mostly because I like maps and fish.
+
+[More projects](https://github.com/emmabranch) · [LinkedIn](https://www.linkedin.com/in/embranch/) · emma.branch@gmail.com
