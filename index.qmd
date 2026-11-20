@@ -85,7 +85,8 @@ stat <- function(num, lab) div(class = "stat-box", div(class = "num", num), div(
 div(class = "stat-row",
   stat(f0(n_da), "neighbourhoods scored (census dissemination areas)"),
   stat(n_priority, sprintf("priority neighbourhoods, home to about %s people", f0(pop_priority))),
-  stat(sprintf("%.0f%% vs %.0f%%", veg_q5, veg_q1), "vegetation cover, most vs least vulnerable fifth"),
+  stat(tagList(sprintf("%.0f%%", veg_q5), span(class = "vs", "vs"), sprintf("%.0f%%", veg_q1)),
+       "vegetation cover, most vs least vulnerable fifth"),
   stat(sprintf("%.2f", rho_cisv), "agreement with Statistics Canada's vulnerability index")
 )
 ```
