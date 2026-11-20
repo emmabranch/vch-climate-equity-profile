@@ -58,35 +58,37 @@ stripes_svg <- HTML(paste0(
 
 ```{r}
 #| label: hero
-div(class = "hero",
-  div(class = "eyebrow", "Independent portfolio project · open data"),
-  h1(class = "hero-title",
-     "Who is most vulnerable to heat and smoke?", tags$br(),
-     span(class = "hero-accent", "And where is green cover lowest?")),
-  p(class = "hero-lede", sprintf(
-    "A transparent social vulnerability index for %s neighbourhoods in the Vancouver Coastal Health region, mapped alongside vegetation cover. In the most vulnerable fifth of neighbourhoods, vegetation covers %.0f%% of land, compared with %.0f%% in the least vulnerable fifth.",
-    f0(n_da), veg_q5, veg_q1)),
-  div(class = "hero-buttons",
-    a(class = "btn-pill solid", href = "#interactive-map", "Explore the map"),
-    a(class = "btn-pill ghost", href = "briefing.html", "Read the briefing"),
-    a(class = "btn-pill ghost", href = "https://github.com/emmabranch/vch-climate-equity-profile", "View the code")),
-  div(class = "hero-stripes",
-    stripes_svg,
-    span(class = "stripes-note",
-         "Each stripe is a group of urban neighbourhoods, ordered from least vulnerable (left) to most vulnerable (right) and coloured by average vegetation cover: tan is less, green is more. Hover for values.")),
-  div(class = "hero-disclaimer", "Not affiliated with or endorsed by Vancouver Coastal Health.")
-)
+#| column: screen
+wave <- HTML('<svg class="hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0,40 C240,80 480,0 720,30 C960,60 1200,10 1440,40 L1440,80 L0,80 Z"></path></svg>')
+
+div(class = "hero-full",
+  div(class = "hero-bg", stripes_svg),
+  div(class = "hero-inner",
+    div(class = "eyebrow", "Independent portfolio project · open data"),
+    h1(class = "hero-title",
+       "Who is most vulnerable to heat and smoke?", " ",
+       span(class = "accent", "And where is green cover lowest?")),
+    p(class = "hero-lede", sprintf(
+      "A transparent social vulnerability index for %s neighbourhoods in the Vancouver Coastal Health region, mapped alongside vegetation cover. In the large urban area, vegetation covers %.0f%% of land in the most vulnerable fifth of neighbourhoods, compared with %.0f%% in the least vulnerable fifth.",
+      f0(n_da), veg_q5, veg_q1)),
+    div(class = "hero-buttons",
+      a(class = "btn btn-accent", href = "#interactive-map", "Explore the map"),
+      a(class = "btn btn-ghost", href = "briefing.html", "Read the briefing"),
+      a(class = "btn btn-ghost", href = "https://github.com/emmabranch/vch-climate-equity-profile", "View the code")),
+    p(class = "hero-note", "Background: each stripe is a group of urban neighbourhoods, ordered from least vulnerable (left) to most vulnerable (right) and coloured by average vegetation cover: tan is less, green is more."),
+    p(class = "hero-note", "Not affiliated with or endorsed by Vancouver Coastal Health.")),
+  wave)
 ```
 
 ```{r}
 #| label: stats
 stat <- function(num, lab) div(class = "stat-box", div(class = "num", num), div(class = "lab", lab))
 
-div(class = "stat-row",
+div(class = "stat-row lift",
   stat(f0(n_da), "neighbourhoods scored (census dissemination areas)"),
   stat(n_priority, sprintf("priority neighbourhoods, home to about %s people", f0(pop_priority))),
-  stat(tagList(sprintf("%.0f%%", veg_q5), span(class = "vs", "vs"), sprintf("%.0f%%", veg_q1)),
-       "vegetation cover, most vs least vulnerable fifth"),
+  stat(tagList(sprintf("%.0f%%", veg_q5), span(class = "vs", " vs "), sprintf("%.0f%%", veg_q1)),
+       "vegetation cover in the urban area, most vs least vulnerable fifth"),
   stat(sprintf("%.2f", rho_cisv), "agreement with Statistics Canada's vulnerability index")
 )
 ```
