@@ -1,27 +1,103 @@
 ---
-title: "Climate resilience and equity profile of VCH communities"
-subtitle: "Where social vulnerability to extreme heat and wildfire smoke overlaps with low green cover"
+pagetitle: "Climate resilience and equity profile of VCH communities"
 ---
 
 ```{r}
 #| label: setup
 library(here)
 library(dplyr)
+library(readr)
 library(sf)
 library(leaflet)
 library(knitr)
+library(htmltools)
 
 da   <- st_read(here("data", "processed", "vch_da_index.gpkg"), quiet = TRUE)
 chsa <- st_read(here("data", "processed", "vch_chsa_summary.gpkg"), quiet = TRUE)
+val  <- read_csv(here("data", "processed", "index_validation.csv"), show_col_types = FALSE)
+
+f0 <- function(x) format(round(x), big.mark = ",")
+
+# Headline numbers
+da_tbl       <- st_drop_geometry(da)
+n_da         <- sum(da_tbl$in_index)
+n_chsa       <- sum(!is.na(chsa$svi_mean))
+n_priority   <- sum(da_tbl$priority)
+pop_priority <- sum(da_tbl$pop_total[da_tbl$priority], na.rm = TRUE)
+rho_cisv     <- val$spearman_rho[grepl("CISV", val$comparison)]
+
+veg_q <- da_tbl |>
+  filter(in_index, !is.na(fvc_pct), !is.na(pop_total)) |>
+  group_by(svi_quintile) |>
+  summarise(fvc = weighted.mean(fvc_pct, pop_total), .groups = "drop")
+veg_q1 <- veg_q$fvc[veg_q$svi_quintile == 1]
+veg_q5 <- veg_q$fvc[veg_q$svi_quintile == 5]
+
+# Banner stripes: neighbourhoods ordered by vulnerability (40 equal groups),
+# each stripe coloured by the group's average vegetation cover
+n_bins <- 40
+stripe_df <- da_tbl |>
+  filter(in_index, !is.na(fvc_pct)) |>
+  mutate(bin = ntile(svi_score, n_bins)) |>
+  group_by(bin) |>
+  summarise(fvc = mean(fvc_pct), .groups = "drop")
+
+pal_stripe <- colorNumeric(c("#d9c7a1", "#a8d5a2", "#1a7f4b"), domain = range(stripe_df$fvc))
+w <- 1000 / n_bins
+stripe_rects <- sprintf(
+  '<rect x="%.2f" y="0" width="%.2f" height="26" fill="%s"><title>Vulnerability percentile %.0f to %.0f: %.0f%% vegetation cover</title></rect>',
+  (stripe_df$bin - 1) * w, w + 0.6, pal_stripe(stripe_df$fvc),
+  (stripe_df$bin - 1) * 100 / n_bins, stripe_df$bin * 100 / n_bins, stripe_df$fvc
+)
+stripes_svg <- HTML(paste0(
+  '<svg viewBox="0 0 1000 26" preserveAspectRatio="none" role="img" ',
+  'aria-label="Stripes showing vegetation cover falling as neighbourhood vulnerability rises">',
+  paste(stripe_rects, collapse = ""), "</svg>"
+))
 ```
 
-This map shows a simple social vulnerability index for every neighbourhood (census dissemination area) in the Vancouver Coastal Health region, alongside vegetation cover. Click any area to see its details.
+```{r}
+#| label: hero
+div(class = "hero",
+  div(class = "eyebrow", "Independent portfolio project · open data"),
+  h1(class = "hero-title",
+     "Who is most vulnerable to heat and smoke?", tags$br(),
+     span(class = "hero-accent", "And where is green cover lowest?")),
+  p(class = "hero-lede", sprintf(
+    "A transparent social vulnerability index for %s neighbourhoods in the Vancouver Coastal Health region, mapped alongside vegetation cover. In the most vulnerable fifth of neighbourhoods, vegetation covers %.0f%% of land, compared with %.0f%% in the least vulnerable fifth.",
+    f0(n_da), veg_q5, veg_q1)),
+  div(class = "hero-buttons",
+    a(class = "btn-pill solid", href = "#interactive-map", "Explore the map"),
+    a(class = "btn-pill ghost", href = "briefing.html", "Read the briefing"),
+    a(class = "btn-pill ghost", href = "https://github.com/emmabranch/vch-climate-equity-profile", "View the code")),
+  div(class = "hero-stripes",
+    stripes_svg,
+    span(class = "stripes-note",
+         "Each stripe is a group of urban neighbourhoods, ordered from least vulnerable (left) to most vulnerable (right) and coloured by average vegetation cover: tan is less, green is more. Hover for values.")),
+  div(class = "hero-disclaimer", "Not affiliated with or endorsed by Vancouver Coastal Health.")
+)
+```
 
-- **Social vulnerability** combines five 2021 Census indicators with equal weights: people aged 65 and over, one-person households, low income, renter households, and people with no knowledge of English or French. Areas are grouped into fifths across the VCH region, from 1 (least vulnerable) to 5 (most vulnerable).
+```{r}
+#| label: stats
+stat <- function(num, lab) div(class = "stat-box", div(class = "num", num), div(class = "lab", lab))
+
+div(class = "stat-row",
+  stat(f0(n_da), "neighbourhoods scored (census dissemination areas)"),
+  stat(n_priority, sprintf("priority neighbourhoods, home to about %s people", f0(pop_priority))),
+  stat(sprintf("%.0f%% vs %.0f%%", veg_q5, veg_q1), "vegetation cover, most vs least vulnerable fifth"),
+  stat(sprintf("%.2f", rho_cisv), "agreement with Statistics Canada's vulnerability index")
+)
+```
+
+## How to read the map
+
+- **Social vulnerability** combines five 2021 Census indicators with equal weights: people aged 65 and over, one-person households, low income, renter households, and people with no knowledge of English or French. Neighbourhoods are grouped into fifths across the VCH region, from 1 (least vulnerable) to 5 (most vulnerable).
 - **Vegetation cover** is the share of ground covered by trees, shrubs, or grass, averaged over 2019 to 2024 (Statistics Canada). It is only available for the large urban area, so rural communities appear grey.
 - **Priority areas** (dark blue outline) are in the most vulnerable fifth *and* the lowest third for vegetation cover.
+- Use the layer box (top right of the map) to switch between vulnerability and vegetation, and to show or hide priority areas and CHSA boundaries. Click any neighbourhood for its details.
 
-Use the layer button (top right of the map) to switch between vulnerability and vegetation, and to show or hide priority areas and CHSA boundaries.
+## Interactive map {#interactive-map}
 
 ```{r}
 #| label: map
@@ -55,8 +131,8 @@ pal_fvc <- colorBin("Greens", domain = c(0, 100),
                     bins = c(0, 15, 25, 35, 50, 100), na.color = "#d9d9d9")
 
 leaflet(width = "100%", height = "680px") |>
-   addProviderTiles(providers$Esri.WorldGrayCanvas) |>
-    addPolygons(
+  addProviderTiles(providers$Esri.WorldGrayCanvas) |>
+  addPolygons(
     data = da, group = "Social vulnerability",
     fillColor = ~pal_svi(svi_quintile), fillOpacity = 0.75,
     color = "white", weight = 0.3, popup = ~popup,
@@ -117,6 +193,8 @@ chsa |>
 
 ## About this project
 
+::: {.disclaimer}
 This is an independent portfolio project using open data. It is not affiliated with or endorsed by Vancouver Coastal Health. Methods, data sources, licences, and limitations are documented in the [GitHub repository](https://github.com/emmabranch/vch-climate-equity-profile).
+:::
 
-**Data:** Statistics Canada 2021 Census Profile and boundary files; Statistics Canada Canadian Index of Social Vulnerability and Canadian Index of Multiple Deprivation (2021); Statistics Canada vegetation cover in large urban areas (Table 38-10-0187-01); BC Ministry of Health Community Health Service Area boundaries (BC Data Catalogue).    Basemap: Esri World Light Gray Canvas (Esri, HERE, Garmin, © OpenStreetMap contributors).
+**Data:** Statistics Canada 2021 Census Profile and boundary files; Statistics Canada Canadian Index of Social Vulnerability and Canadian Index of Multiple Deprivation (2021); Statistics Canada vegetation cover in large urban areas (Table 38-10-0187-01); BC Ministry of Health Community Health Service Area boundaries (BC Data Catalogue). The recommendations in the briefing draw on Vancouver Coastal Health's CLEAR report (2025). Basemap: Esri World Light Gray Canvas (Esri, HERE, Garmin, © OpenStreetMap contributors).

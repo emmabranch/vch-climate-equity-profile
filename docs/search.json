@@ -44,22 +44,36 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Climate resilience and equity profile of VCH communities",
+    "title": "\nWho is most vulnerable to heat and smoke?\n\nAnd where is green cover lowest?\n",
     "section": "",
-    "text": "This map shows a simple social vulnerability index for every neighbourhood (census dissemination area) in the Vancouver Coastal Health region, alongside vegetation cover. Click any area to see its details.\nUse the layer button (top right of the map) to switch between vulnerability and vegetation, and to show or hide priority areas and CHSA boundaries."
+    "text": "Independent portfolio project · open data\n\nA transparent social vulnerability index for 1,773 neighbourhoods in the Vancouver Coastal Health region, mapped alongside vegetation cover. In the most vulnerable fifth of neighbourhoods, vegetation covers 25% of land, compared with 35% in the least vulnerable fifth.\n\nExplore the map\nRead the briefing\nView the code\n\n\nVulnerability percentile 0 to 2: 40% vegetation coverVulnerability percentile 2 to 5: 39% vegetation coverVulnerability percentile 5 to 8: 35% vegetation coverVulnerability percentile 8 to 10: 34% vegetation coverVulnerability percentile 10 to 12: 36% vegetation coverVulnerability percentile 12 to 15: 29% vegetation coverVulnerability percentile 15 to 18: 32% vegetation coverVulnerability percentile 18 to 20: 34% vegetation coverVulnerability percentile 20 to 22: 33% vegetation coverVulnerability percentile 22 to 25: 31% vegetation coverVulnerability percentile 25 to 28: 31% vegetation coverVulnerability percentile 28 to 30: 32% vegetation coverVulnerability percentile 30 to 32: 30% vegetation coverVulnerability percentile 32 to 35: 31% vegetation coverVulnerability percentile 35 to 38: 31% vegetation coverVulnerability percentile 38 to 40: 31% vegetation coverVulnerability percentile 40 to 42: 30% vegetation coverVulnerability percentile 42 to 45: 27% vegetation coverVulnerability percentile 45 to 48: 29% vegetation coverVulnerability percentile 48 to 50: 30% vegetation coverVulnerability percentile 50 to 52: 30% vegetation coverVulnerability percentile 52 to 55: 27% vegetation coverVulnerability percentile 55 to 58: 27% vegetation coverVulnerability percentile 58 to 60: 29% vegetation coverVulnerability percentile 60 to 62: 30% vegetation coverVulnerability percentile 62 to 65: 28% vegetation coverVulnerability percentile 65 to 68: 27% vegetation coverVulnerability percentile 68 to 70: 27% vegetation coverVulnerability percentile 70 to 72: 28% vegetation coverVulnerability percentile 72 to 75: 27% vegetation coverVulnerability percentile 75 to 78: 26% vegetation coverVulnerability percentile 78 to 80: 25% vegetation coverVulnerability percentile 80 to 82: 25% vegetation coverVulnerability percentile 82 to 85: 25% vegetation coverVulnerability percentile 85 to 88: 27% vegetation coverVulnerability percentile 88 to 90: 25% vegetation coverVulnerability percentile 90 to 92: 27% vegetation coverVulnerability percentile 92 to 95: 26% vegetation coverVulnerability percentile 95 to 98: 26% vegetation coverVulnerability percentile 98 to 100: 24% vegetation cover\nEach stripe is a group of urban neighbourhoods, ordered from least vulnerable (left) to most vulnerable (right) and coloured by average vegetation cover: tan is less, green is more. Hover for values.\n\nNot affiliated with or endorsed by Vancouver Coastal Health.\n1,773\nneighbourhoods scored (census dissemination areas)\n\n\n166\npriority neighbourhoods, home to about 137,967 people\n\n\n25% vs 35%\nvegetation cover, most vs least vulnerable fifth\n\n\n0.74\nagreement with Statistics Canada's vulnerability index"
+  },
+  {
+    "objectID": "index.html#how-to-read-the-map",
+    "href": "index.html#how-to-read-the-map",
+    "title": "\nWho is most vulnerable to heat and smoke?\n\nAnd where is green cover lowest?\n",
+    "section": "How to read the map",
+    "text": "How to read the map\n\nSocial vulnerability combines five 2021 Census indicators with equal weights: people aged 65 and over, one-person households, low income, renter households, and people with no knowledge of English or French. Neighbourhoods are grouped into fifths across the VCH region, from 1 (least vulnerable) to 5 (most vulnerable).\nVegetation cover is the share of ground covered by trees, shrubs, or grass, averaged over 2019 to 2024 (Statistics Canada). It is only available for the large urban area, so rural communities appear grey.\nPriority areas (dark blue outline) are in the most vulnerable fifth and the lowest third for vegetation cover.\nUse the layer box (top right of the map) to switch between vulnerability and vegetation, and to show or hide priority areas and CHSA boundaries. Click any neighbourhood for its details."
+  },
+  {
+    "objectID": "index.html#interactive-map",
+    "href": "index.html#interactive-map",
+    "title": "\nWho is most vulnerable to heat and smoke?\n\nAnd where is green cover lowest?\n",
+    "section": "Interactive map",
+    "text": "Interactive map"
   },
   {
     "objectID": "index.html#communities-with-the-highest-social-vulnerability",
     "href": "index.html#communities-with-the-highest-social-vulnerability",
-    "title": "Climate resilience and equity profile of VCH communities",
+    "title": "\nWho is most vulnerable to heat and smoke?\n\nAnd where is green cover lowest?\n",
     "section": "Communities with the highest social vulnerability",
     "text": "Communities with the highest social vulnerability\nCommunity Health Service Areas (CHSAs) ranked by population-weighted mean vulnerability score.\n\n\n\n\n\n\n\n\n\n\n\n\n\nRank\nCHSA\nPopulation\nMean vulnerability score\nPopulation in most vulnerable fifth (%)\nVegetation cover (%)\n\n\n\n\n1\nDowntown Eastside\n20,168\n0.76\n87\n17\n\n\n2\nRichmond City Centre\n63,946\n0.66\n75\n24\n\n\n3\nWest End\n46,891\n0.65\n64\n24\n\n\n4\nOakridge/Marpole\n42,794\n0.61\n47\n27\n\n\n5\nDowntown Vancouver\n44,523\n0.61\n50\n18\n\n\n6\nWest Vancouver - Lower\n20,132\n0.59\n50\n34\n\n\n7\nUniversity of British Columbia\n18,296\n0.58\n40\n35\n\n\n8\nVictoria-Fraserview\n30,433\n0.58\n31\n23\n\n\n9\nShaughnessy/Arbutus Ridge/Kerrisdale\n38,308\n0.57\n32\n36\n\n\n10\nBlundell\n18,063\n0.55\n17\n30"
   },
   {
     "objectID": "index.html#about-this-project",
     "href": "index.html#about-this-project",
-    "title": "Climate resilience and equity profile of VCH communities",
+    "title": "\nWho is most vulnerable to heat and smoke?\n\nAnd where is green cover lowest?\n",
     "section": "About this project",
-    "text": "About this project\nThis is an independent portfolio project using open data. It is not affiliated with or endorsed by Vancouver Coastal Health. Methods, data sources, licences, and limitations are documented in the GitHub repository.\nData: Statistics Canada 2021 Census Profile and boundary files; Statistics Canada Canadian Index of Social Vulnerability and Canadian Index of Multiple Deprivation (2021); Statistics Canada vegetation cover in large urban areas (Table 38-10-0187-01); BC Ministry of Health Community Health Service Area boundaries (BC Data Catalogue). Basemap: Esri World Light Gray Canvas (Esri, HERE, Garmin, © OpenStreetMap contributors)."
+    "text": "About this project\n\nThis is an independent portfolio project using open data. It is not affiliated with or endorsed by Vancouver Coastal Health. Methods, data sources, licences, and limitations are documented in the GitHub repository.\n\nData: Statistics Canada 2021 Census Profile and boundary files; Statistics Canada Canadian Index of Social Vulnerability and Canadian Index of Multiple Deprivation (2021); Statistics Canada vegetation cover in large urban areas (Table 38-10-0187-01); BC Ministry of Health Community Health Service Area boundaries (BC Data Catalogue). The recommendations in the briefing draw on Vancouver Coastal Health’s CLEAR report (2025). Basemap: Esri World Light Gray Canvas (Esri, HERE, Garmin, © OpenStreetMap contributors)."
   }
 ]

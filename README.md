@@ -9,7 +9,7 @@
 
 ## Key findings
 
-- **Vulnerability is concentrated.** Across 1,767 dissemination areas (DAs) in 45 Community Health Service Areas (CHSAs), the highest average vulnerability was in the Downtown Eastside, Richmond City Centre, and the West End.
+- **Vulnerability is concentrated.** Across 1,773 dissemination areas (DAs) in 45 Community Health Service Areas (CHSAs), the highest average vulnerability was in the Downtown Eastside, Richmond City Centre, and the West End.
 - **More vulnerable neighbourhoods have less green cover** (Spearman's rho = -0.36 between the vulnerability index and vegetation cover, n = 1,599 urban DAs).
 - **166 DAs face both risks:** they are in the most vulnerable fifth of the region *and* the lowest third for vegetation cover.
 - **Vulnerability has different drivers in different places**, for example older adults living alone in some communities, and low income, renting, or language barriers in others.

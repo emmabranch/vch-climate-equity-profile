@@ -7,6 +7,7 @@ project:
 
 website:
   title: "VCH Climate Resilience and Equity Profile"
+  favicon: favicon.svg
   navbar:
     left:
       - href: index.qmd
@@ -21,7 +22,7 @@ website:
 
 format:
   html:
-    theme: cosmo
+    theme: [cosmo, theme.scss]
     toc: false
 
 execute:
