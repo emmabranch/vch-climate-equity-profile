@@ -2,16 +2,16 @@
 
 **Which communities in the Vancouver Coastal Health (VCH) region are most socially vulnerable to extreme heat and wildfire smoke, and do they also have less green cover?**
 
-- **Interactive map:** https://emmabranch.github.io/vch-climate-equity-profile/
-- **Two-page briefing note** (for Medical Health Officers and local government planners): [web](https://emmabranch.github.io/vch-climate-equity-profile/briefing.html) | [PDF](https://emmabranch.github.io/vch-climate-equity-profile/briefing.pdf)
+- **Project site and interactive map:** https://emmabranch.github.io/vch-climate-equity-profile/
+- **Two-page briefing note** (for Medical Health Officers and local government planners), with recommendations informed by VCH's CLEAR lived-experience report: [web](https://emmabranch.github.io/vch-climate-equity-profile/briefing.html) | [PDF](https://emmabranch.github.io/vch-climate-equity-profile/briefing.pdf)
 
 > **Disclaimer:** This is an independent portfolio project by Emma Branch, built with open data. It is not affiliated with, commissioned by, or endorsed by Vancouver Coastal Health. Findings are illustrative and should not be used for operational decisions without further validation.
 
 ## Key findings
 
 - **Vulnerability is concentrated.** Across 1,773 dissemination areas (DAs) in 45 Community Health Service Areas (CHSAs), the highest average vulnerability was in the Downtown Eastside, Richmond City Centre, and the West End.
-- **More vulnerable neighbourhoods have less green cover** (Spearman's rho = -0.36 between the vulnerability index and vegetation cover, n = 1,599 urban DAs).
-- **166 DAs face both risks:** they are in the most vulnerable fifth of the region *and* the lowest third for vegetation cover.
+- **More vulnerable neighbourhoods have less green cover.** In the urban area, vegetation covers about 25% of land in the most vulnerable fifth of neighbourhoods, compared with 35% in the least vulnerable fifth (population-weighted; Spearman's rho = -0.36, n = 1,599 urban DAs).
+- **166 DAs, home to about 138,000 people, face both risks:** they are in the most vulnerable fifth of the region *and* the lowest third for vegetation cover.
 - **Vulnerability has different drivers in different places**, for example older adults living alone in some communities, and low income, renting, or language barriers in others.
 - **The index is consistent with national measures:** it agrees closely with Statistics Canada's Canadian Index of Social Vulnerability (rho = 0.74).
 
@@ -103,9 +103,11 @@ vch-climate-equity-profile/
 ├── data/
 │   ├── raw/                  # Raw downloads (not committed; recreate with 01)
 │   └── processed/            # Analysis outputs used by the map and briefing
-├── index.qmd                 # Interactive map page
+├── index.qmd                 # Home page: banner, key figures, interactive map, CHSA table
 ├── briefing.qmd              # Two-page briefing note (HTML and PDF)
 ├── _quarto.yml               # Website settings
+├── theme.scss                # Site styling (fonts, colours, banner, stat boxes)
+├── favicon.svg               # Browser tab icon
 ├── docs/                     # Rendered website (GitHub Pages)
 └── renv.lock                 # R package versions
 ```
@@ -122,7 +124,7 @@ vch-climate-equity-profile/
 
 ## Built with
 
-R (sf, dplyr, tidyr, readr, bcdata, cansim, leaflet, knitr), Quarto, Typst, renv, and GitHub Pages.
+R (sf, dplyr, tidyr, readr, bcdata, cansim, leaflet, htmltools, knitr), Quarto with a custom SCSS theme, Typst (for the PDF briefing), renv, and GitHub Pages.
 
 ## Author
 
