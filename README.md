@@ -39,6 +39,8 @@
 
 No BC Centre for Disease Control data were used.
 
+Code: MIT licence (see [`LICENSE`](LICENSE)). Data keep their original licences, listed above.
+
 ### Related evidence
 
 - Vancouver Coastal Health Public Health. (2025). *Climate, Lived Experience and Resilience (the CLEAR project): Listening to communities to enhance the public health response to extreme weather events for priority populations.* Vancouver, BC: Vancouver Coastal Health.
