@@ -4,6 +4,8 @@ project:
   render:
     - index.qmd
     - briefing.qmd
+  resources:
+    - .nojekyll
 
 website:
   title: "VCH Climate Resilience and Equity Profile"
