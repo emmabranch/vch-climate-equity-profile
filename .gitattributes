@@ -1,0 +1,3 @@
+# Tell GitHub which files are generated (the rendered website), so the
+# repository language reflects the code (R) rather than the HTML and JavaScript.
+docs/** linguist-generated
