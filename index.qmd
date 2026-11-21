@@ -88,7 +88,7 @@ div(class = "stat-row lift",
   stat(f0(n_da), "neighbourhoods scored (census dissemination areas)"),
   stat(n_priority, sprintf("priority neighbourhoods, home to about %s people", f0(pop_priority))),
   stat(tagList(sprintf("%.0f%%", veg_q5), span(class = "vs", " vs "), sprintf("%.0f%%", veg_q1)),
-       "vegetation cover in the urban area, most vs least vulnerable fifth"),
+       "vegetation cover in the large urban area, most vs least vulnerable fifth"),
   stat(sprintf("%.2f", rho_cisv), "agreement with Statistics Canada's vulnerability index")
 )
 ```
