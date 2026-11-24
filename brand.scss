@@ -16,6 +16,7 @@ $eb-muted: #5A544A;
 $eb-cobalt: #2340FF;
 $eb-sun: #FFD23F;
 
+$web-font-path: false;   /* stop Bootswatch themes loading their own Google font */
 $border-radius: 0;
 $border-radius-sm: 0;
 $border-radius-lg: 0;
@@ -148,11 +149,11 @@ main.content:has(.hero-full) > #title-block-header { margin: 0 !important; }
   z-index: 2;
   max-width: 1180px;
   margin: 0 auto;
-  padding: 4.5rem 2rem 7rem;
+  padding: 4rem 2rem 6rem;
 }
 .hero-full h1 {
   color: #fff;
-  font-size: clamp(2.3rem, 5.2vw, 4.4rem);
+  font-size: clamp(2.2rem, 4.4vw, 3.6rem);
   font-weight: 800;
   line-height: 1.02;
   letter-spacing: -0.035em;
@@ -181,7 +182,7 @@ main.content:has(.hero-full) > #title-block-header { margin: 0 !important; }
 /* On the dark hero, button shadows are paper-coloured so they still show */
 .hero-full .btn { margin: 1rem 0.8rem 0 0; padding: 0.55rem 1.25rem; box-shadow: 4px 4px 0 #{$eb-paper}; }
 .hero-full .btn:hover, .hero-full .btn:focus { box-shadow: 2px 2px 0 #{$eb-paper}; }
-.hero-full .hero-note { font-family: "Space Mono", monospace; font-size: 0.75rem; line-height: 1.5; opacity: 0.8; margin-top: 2rem; max-width: 52rem; }
+.hero-full .hero-note { font-family: "Space Mono", monospace; font-size: 0.75rem; line-height: 1.5; opacity: 0.8; margin-top: 1.4rem; max-width: 52rem; }
 .hero-full .hero-note + .hero-note { margin-top: 0.4rem; }
 /* Project motif: a round paper badge in the top right of the hero.
    Markup (inside .hero-full, before .hero-inner):
@@ -216,7 +217,7 @@ main.content:has(.hero-full) > #title-block-header { margin: 0 !important; }
 /* ---------- Stat boxes (optionally overlapping the hero with .lift) ---------- */
 .stat-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 18px;
   margin: 0 0 1.8rem;
 }
