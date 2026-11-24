@@ -6,11 +6,14 @@ project:
     - briefing.qmd
   resources:
     - .nojekyll
+    - images/motif.svg
 
 website:
   title: "VCH Climate Resilience and Equity Profile"
-  favicon: favicon.svg
+  favicon: images/favicon.png
   navbar:
+    logo: images/motif.svg
+    logo-alt: ""
     left:
       - href: index.qmd
         text: Map

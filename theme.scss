@@ -28,6 +28,12 @@
     linear-gradient(100deg, rgba(9, 28, 30, 0.96) 0%, rgba(9, 28, 30, 0.82) 42%, rgba(9, 28, 30, 0.15) 100%);
 }
 
+/* A long headline, so slightly smaller type and less space under the notes,
+   to keep the hero about the same height as the other sites */
+.hero-full h1 { font-size: clamp(2.1rem, 4.2vw, 3.5rem); }
+.hero-inner { padding-bottom: 6rem; }
+.hero-full .hero-note { margin-top: 1.2rem; }
+
 /* On phones the text runs the full width, so keep the overlay darker throughout */
 @media (max-width: 700px) {
   .hero-full::before {
@@ -35,54 +41,38 @@
   }
 }
 
-/* ---------- Type ---------- */
-h1, h2, h3 { letter-spacing: -0.01em; }
-h1.title { font-weight: 800; }
-h2 { margin-top: 2.4rem; }
-
-/* ---------- Stat boxes: one colour each ---------- */
+/* ---------- Stat boxes: leaf greens, tomato for the priority areas ---------- */
 .stat-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.stat-box:nth-child(1) { border-top-color: #2471a3; }
-.stat-box:nth-child(2) { border-top-color: #16a085; }
-.stat-box:nth-child(3) { border-top-color: #c0392b; }
-.stat-box:nth-child(4) { border-top-color: #1a7f4b; }
-.stat-box .num { font-size: 1.8rem; white-space: nowrap; }
+.stat-box:nth-child(1) { border-top-color: #3f7d2c; }
+.stat-box:nth-child(2) { border-top-color: #FF5A36; }
+.stat-box:nth-child(3) { border-top-color: #8cc152; }
+.stat-box:nth-child(4) { border-top-color: #2a5a1d; }
+.stat-box .num { white-space: nowrap; }
+.stat-box .num:has(.vs) { font-size: 1.5rem; }
 .stat-box .num .vs {
-  font-family: "Inter", sans-serif;
+  font-family: "Space Mono", monospace;
   font-size: 0.5em;
-  font-weight: 600;
-  color: #5b6770;
+  font-weight: 700;
+  color: #5A544A;
   margin: 0;
   vertical-align: middle;
 }
 
-/* ---------- Map and tables as panels ---------- */
-.leaflet-container {
-  border-radius: 14px;
-  box-shadow: 0 1px 3px rgba(16, 42, 67, 0.08), 0 10px 26px rgba(16, 42, 67, 0.10);
-}
-.leaflet-control-layers, .leaflet-control .legend, .info.legend {
-  border-radius: 10px !important;
-  font-family: "Inter", sans-serif;
-}
-.table {
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  font-size: 0.95rem;
-  box-shadow: 0 1px 3px rgba(16, 42, 67, 0.06);
-}
-.table thead th { background: #eef3f7; border-bottom: none; }
+/* ---------- Map and tables as panels (outlines come from the brand kit) ---------- */
+main .leaflet-container { box-shadow: 6px 6px 0 #111111; }
+.leaflet-control-layers, .leaflet-control .legend, .info.legend { font-family: "Bricolage Grotesque", sans-serif; }
+.table { background: #ffffff; border: 2px solid #111111; font-size: 0.95rem; }
+.table thead th { background: #F3EEE3; }
 
 /* ---------- Notes ---------- */
 .disclaimer {
-  font-size: 0.9rem;
-  color: #5b4a1e;
-  background: #fff8e6;
-  border-left: 4px solid #d98c00;
-  border-radius: 8px;
-  padding: 0.6rem 0.9rem;
-  margin: 1rem 0 1.4rem;
+  font-size: 0.92rem;
+  color: #111111;
+  background: #ffffff;
+  border: 2px solid #111111;
+  border-left: 8px solid #FFD23F;
+  padding: 0.7rem 1rem;
+  margin: 1rem 0 1.5rem;
 }
 
 /* ---------- Phones (kept last so it wins) ---------- */
