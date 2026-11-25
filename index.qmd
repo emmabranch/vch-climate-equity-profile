@@ -95,7 +95,7 @@ div(class = "stat-row lift",
 
 - **Social vulnerability** combines five 2021 Census indicators with equal weights: people aged 65 and over, one-person households, low income, renter households, and people with no knowledge of English or French. Neighbourhoods are grouped into fifths across the VCH region, from 1 (least vulnerable) to 5 (most vulnerable).
 - **Vegetation cover** is the share of ground covered by trees, shrubs, or grass, averaged over 2019 to 2024 (Statistics Canada). It is only available for the large urban area, so rural communities appear grey.
-- **Priority areas** (dark blue outline) are in the most vulnerable fifth *and* the lowest third for vegetation cover.
+- **Priority areas** (bright blue outline) are in the most vulnerable fifth *and* the lowest third for vegetation cover.
 - Use the layer box (top right of the map) to switch between vulnerability and vegetation, and to show or hide priority areas and CHSA boundaries. Click any neighbourhood for its details.
 
 ## Interactive map {#interactive-map}
@@ -127,41 +127,54 @@ da <- da |>
     ifelse(priority, "<br><br><strong>Priority: high vulnerability and low vegetation</strong>", "")
   ))
 
-pal_svi <- colorFactor("YlOrRd", domain = 1:5, na.color = "#d9d9d9")
-pal_fvc <- colorBin("Greens", domain = c(0, 100),
-                    bins = c(0, 15, 25, 35, 50, 100), na.color = "#d9d9d9")
+# Brand colours, darker = more. Vulnerability: pale sunflower to dark brick.
+# Vegetation: pale kelp to deep kelp. Both step evenly in lightness, so they
+# also read for colourblind readers. "No data" is the kit's warm grey.
+pal_svi <- colorFactor(c("#FFF1B8", "#FFC73A", "#FF7A33", "#D93A16", "#7A1A0E"),
+                       domain = 1:5, na.color = "#C9C1B3")
+pal_fvc <- colorBin(c("#E3F4EC", "#9FDCC4", "#00B386", "#00805F", "#004D39"), domain = c(0, 100),
+                    bins = c(0, 15, 25, 35, 50, 100), na.color = "#C9C1B3")
 
 leaflet(width = "100%", height = "680px") |>
   addProviderTiles(providers$Esri.WorldGrayCanvas) |>
+  # Outlines get their own pane above the colour layers, so they stay on top
+  # when you switch between vulnerability and vegetation
+  addMapPane("outlines", zIndex = 450) |>
   addPolygons(
     data = da, group = "Social vulnerability",
     fillColor = ~pal_svi(svi_quintile), fillOpacity = 0.75,
     color = "white", weight = 0.3, popup = ~popup,
-    highlightOptions = highlightOptions(weight = 2, color = "#333333", bringToFront = FALSE)
+    highlightOptions = highlightOptions(weight = 2, color = "#111111", bringToFront = FALSE)
   ) |>
   addPolygons(
     data = da, group = "Vegetation cover",
     fillColor = ~pal_fvc(fvc_pct), fillOpacity = 0.75,
     color = "white", weight = 0.3, popup = ~popup,
-    highlightOptions = highlightOptions(weight = 2, color = "#333333", bringToFront = FALSE)
+    highlightOptions = highlightOptions(weight = 2, color = "#111111", bringToFront = FALSE)
+  ) |>
+  # Priority areas: a white edge under a cobalt line, so the outline shows on every colour
+  addPolygons(
+    data = filter(da, priority), group = "Priority areas",
+    fill = FALSE, color = "#FFFFFF", weight = 4.5, opacity = 1,
+    options = pathOptions(interactive = FALSE, pane = "outlines")
   ) |>
   addPolygons(
     data = filter(da, priority), group = "Priority areas",
-    fill = FALSE, color = "#08306b", weight = 2.5,
-    options = pathOptions(interactive = FALSE)
+    fill = FALSE, color = "#2340FF", weight = 2.5, opacity = 1,
+    options = pathOptions(interactive = FALSE, pane = "outlines")
   ) |>
   addPolygons(
     data = chsa, group = "CHSA boundaries",
-    fill = FALSE, color = "#252525", weight = 1.2, opacity = 0.8,
-    options = pathOptions(interactive = FALSE)
+    fill = FALSE, color = "#111111", weight = 1.2, opacity = 0.8,
+    options = pathOptions(interactive = FALSE, pane = "outlines")
   ) |>
   addLegend(
     pal = pal_svi, values = 1:5, position = "bottomright",
-    title = "Vulnerability<br>quintile (5 = highest)", opacity = 0.8
+    title = "Vulnerability<br>quintile (5 = highest)", opacity = 0.75   # match the fill
   ) |>
   addLegend(
     pal = pal_fvc, values = c(0, 100), position = "bottomleft",
-    title = "Vegetation<br>cover (%)", opacity = 0.8
+    title = "Vegetation<br>cover (%)", opacity = 0.75   # match the fill
   ) |>
   addLayersControl(
     baseGroups    = c("Social vulnerability", "Vegetation cover"),
